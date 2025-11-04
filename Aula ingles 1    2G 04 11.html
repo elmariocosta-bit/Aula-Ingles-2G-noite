@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Uberization of Work - Quiz</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6fa;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background: #0056b3;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  main {
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h2 {
+    color: #0056b3;
+  }
+  .question {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+  }
+  .translation {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  button {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  button:hover {
+    background: #003f80;
+  }
+  #result {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #333;
+  }
+  #download {
+    margin-left: 10px;
+    background: #008000;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>The Uberization of Work</h1>
+  <p>A Uberização do Trabalho</p>
+</header>
+<main>
+  <h2>Student Information / Informações do aluno</h2>
+  <label for="studentName">Full Name / Nome completo:</label><br>
+  <input type="text" id="studentName" placeholder="Digite seu nome completo" style="width:100%;padding:8px;margin:10px 0 20px 0;">
+
+  <form id="quizForm">
+    <!-- QUESTÕES -->
+  </form>
+
+  <button type="button" onclick="checkAnswers()">Enviar / Corrigir</button>
+  <button type="button" id="download" onclick="downloadCSV()" style="display:none;">Baixar Respostas (CSV)</button>
+  <div id="result"></div>
+</main>
+
+<script>
+// Questões do quiz
+const questions = [
+  {
+    q: "1. What does 'gig work' refer to?",
+    t: "O que significa 'gig work'?",
+    options: ["Permanent office work", "Work through apps like Uber or iFood", "Government employment", "Factory work"],
+    answer: 1
+  },
+  {
+    q: "2. According to experts, by 2030, traditional jobs will be...",
+    t: "De acordo com especialistas, até 2030, os empregos tradicionais serão...",
+    options: ["Much more common", "Much less common", "Exactly the same", "More stable"],
+    answer: 1
+  },
+  {
+    q: "3. The expression 'be your own boss' means:",
+    t: "A expressão 'be your own boss' significa:",
+    options: ["Ser empregado", "Trabalhar para o governo", "Ser seu próprio chefe", "Trabalhar em equipe"],
+    answer: 2
+  },
+  {
+    q: "4. Gig work requires discipline and...",
+    t: "O trabalho por aplicativo exige disciplina e...",
+    options: ["Laziness", "Planning", "Luck", "Vacation"],
+    answer: 1
+  },
+  {
+    q: "5. In gig work, workers must manage their own...",
+    t: "No trabalho por aplicativo, os trabalhadores devem gerenciar seus próprios...",
+    options: ["Taxes", "Vacations", "Bosses", "Clients"],
+    answer: 0
+  },
+  {
+    q: "6. The word 'retirement' means:",
+    t: "A palavra 'retirement' significa:",
+    options: ["Emprego", "Demissão", "Aposentadoria", "Promoção"],
+    answer: 2
+  },
+  {
+    q: "7. What is one advantage of gig work?",
+    t: "Qual é uma vantagem do trabalho por aplicativo?",
+    options: ["High stability", "Freedom and flexibility", "Health insurance", "Paid vacation"],
+    answer: 1
+  },
+  {
+    q: "8. What is one disadvantage of gig work?",
+    t: "Qual é uma desvantagem do trabalho por aplicativo?",
+    options: ["Freedom", "Flexible hours", "Lack of benefits", "Teamwork"],
+    answer: 2
+  },
+  {
+    q: "9. To succeed in the new economy, workers should...",
+    t: "Para ter sucesso na nova economia, os trabalhadores devem...",
+    options: ["Ignore technology", "Develop in-demand skills", "Work less", "Avoid learning"],
+    answer: 1
+  },
+  {
+    q: "10. The key for gig workers is to find...",
+    t: "A chave para os trabalhadores por aplicativo é encontrar...",
+    options: ["Balance", "New jobs", "Stress", "Bosses"],
+    answer: 0
+  },
+  {
+    q: "11. What does 'require' mean?",
+    t: "O que significa 'require'?",
+    options: ["Permitir", "Exigir", "Gerenciar", "Planejar"],
+    answer: 1
+  },
+  {
+    q: "12. What does 'allow' mean?",
+    t: "O que significa 'allow'?",
+    options: ["Permitir", "Exigir", "Trabalhar", "Evitar"],
+    answer: 0
+  },
+  {
+    q: "13. The gig economy is transforming...",
+    t: "A economia por aplicativos está transformando...",
+    options: ["The way we eat", "The way we work", "The way we drive", "The way we sleep"],
+    answer: 1
+  },
+  {
+    q: "14. Experts predict that by 2030...",
+    t: "Especialistas preveem que até 2030...",
+    options: ["Jobs will have disappeared", "Traditional jobs will be less common", "Everyone will work at home", "Companies will close"],
+    answer: 1
+  },
+  {
+    q: "15. The 'future perfect' tense is used to express...",
+    t: "O tempo verbal 'future perfect' é usado para expressar...",
+    options: ["Uma ação contínua", "Uma ação que já terá acontecido no futuro", "Uma ação passada", "Uma ação incerta"],
+    answer: 1
+  },
+  {
+    q: "16. Which sentence uses the future perfect?",
+    t: "Qual frase usa o 'future perfect'?",
+    options: ["I will arrive home at 8 pm.", "I arrive home at 8 pm.", "I will have arrived home by 8 pm.", "I am arriving home at 8 pm."],
+    answer: 2
+  },
+  {
+    q: "17. 'Will have become' means:",
+    t: "'Will have become' significa:",
+    options: ["Terá se tornado", "Está tornando-se", "Vai tornar-se", "Tornou-se"],
+    answer: 0
+  },
+  {
+    q: "18. By the end of this week, Carlos will have completed 300 Uber rides. How many rides has he done so far?",
+    t: "Até o fim desta semana, Carlos terá completado 300 corridas. Quantas ele fez até agora?",
+    options: ["Mais de 300", "Menos de 300", "Exatamente 300", "Nenhuma"],
+    answer: 1
+  },
+  {
+    q: "19. What does 'manage your own taxes' mean?",
+    t: "O que significa 'manage your own taxes'?",
+    options: ["Pagar os impostos por conta própria", "Evitar impostos", "Depender do governo", "Ignorar impostos"],
+    answer: 0
+  },
+  {
+    q: "20. Which is a key challenge in gig work?",
+    t: "Qual é um dos principais desafios no trabalho por aplicativo?",
+    options: ["Estabilidade", "Renda instável", "Férias pagas", "Plano de saúde"],
+    answer: 1
+  },
+  {
+    q: "21. What is one thing gig workers should constantly do?",
+    t: "O que os trabalhadores por aplicativo devem fazer constantemente?",
+    options: ["Atualizar suas habilidades", "Descansar mais", "Mudar de cidade", "Trabalhar menos"],
+    answer: 0
+  },
+  {
+    q: "22. In the text, teenagers entering the workforce should...",
+    t: "No texto, os jovens que entram no mercado de trabalho devem...",
+    options: ["Rejeitar o modelo de aplicativos", "Entender os dois lados", "Trabalhar apenas em escritórios", "Evitar novas oportunidades"],
+    answer: 1
+  },
+  {
+    q: "23. Which best defines 'flexibility'?",
+    t: "Qual melhor define 'flexibility'?",
+    options: ["Rigidez", "Liberdade de horários", "Salário fixo", "Contrato permanente"],
+    answer: 1
+  },
+  {
+    q: "24. What kind of job will dominate many industries?",
+    t: "Que tipo de trabalho dominará muitas indústrias?",
+    options: ["Work through apps", "Office jobs", "Government jobs", "Factory jobs"],
+    answer: 0
+  },
+  {
+    q: "25. The gig economy offers freedom but also...",
+    t: "A economia de aplicativos oferece liberdade, mas também...",
+    options: ["Desafios", "Riqueza", "Estabilidade", "Benefícios"],
+    answer: 0
+  },
+  {
+    q: "26. The word 'discipline' in the text means:",
+    t: "A palavra 'discipline' no texto significa:",
+    options: ["Desorganização", "Disciplina", "Descanso", "Liberdade"],
+    answer: 1
+  },
+  {
+    q: "27. Gig workers are not...",
+    t: "Os trabalhadores por aplicativo não são...",
+    options: ["Empregados formais", "Empreendedores", "Motoristas", "Profissionais autônomos"],
+    answer: 0
+  },
+  {
+    q: "28. The future of work will have more...",
+    t: "O futuro do trabalho terá mais...",
+    options: ["Liberdade e flexibilidade", "Empregos fixos", "Horários tradicionais", "Carteira assinada"],
+    answer: 0
+  },
+  {
+    q: "29. To protect themselves financially, workers should...",
+    t: "Para se proteger financeiramente, os trabalhadores devem...",
+    options: ["Economizar e planejar", "Ignorar impostos", "Gastar mais", "Trabalhar menos"],
+    answer: 0
+  },
+  {
+    q: "30. The expression 'constantly upgrade your skills' means:",
+    t: "A expressão 'constantly upgrade your skills' significa:",
+    options: ["Sempre melhorar suas habilidades", "Descansar suas habilidades", "Evitar aprender", "Ensinar os outros"],
+    answer: 0
+  }
+];
+
+// gera o quiz
+const form = document.getElementById('quizForm');
+questions.forEach((q, i) => {
+  const div = document.createElement('div');
+  div.className = 'question';
+  div.innerHTML = `<strong>${q.q}</strong><div class="translation">${q.t}</div>` +
+    q.options.map((opt, j) =>
+      `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`
+    ).join('');
+  form.appendChild(div);
+});
+
+function checkAnswers() {
+  const name = document.getElementById("studentName").value.trim();
+  if (!name) { alert("Por favor, digite seu nome completo."); return; }
+
+  let score = 0;
+  questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && parseInt(selected.value) === q.answer) score++;
+  });
+
+  const percent = ((score / questions.length) * 100).toFixed(1);
+  document.getElementById("result").innerHTML = 
+    `Você acertou ${score} de ${questions.length} (${percent}%).`;
+
+  document.getElementById("download").style.display = "inline-block";
+  localStorage.setItem("quizResult", `${name},${score},${percent}%`);
+}
+
+function downloadCSV() {
+  const saved = localStorage.getItem("quizResult");
+  if (!saved) return alert("Nenhum resultado salvo.");
+  const csv = "Nome,Acertos,Percentual\n" + saved;
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "resultados_quiz.csv";
+  link.click();
+}
+</script>
+</body>
+</html>
